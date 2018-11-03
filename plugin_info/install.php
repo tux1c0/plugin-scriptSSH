@@ -19,7 +19,7 @@
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 function scriptssh_install() {
-	$cron = cron::byClassAndFunction('scriptssh', 'update');
+	/*$cron = cron::byClassAndFunction('scriptssh', 'update');
 	if (!is_object($cron)) {
 		$cron = new cron();
 		$cron->setClass('scriptssh');
@@ -29,11 +29,11 @@ function scriptssh_install() {
 		$cron->setSchedule('* * * * *');
 		$cron->setTimeout(30);
 		$cron->save();
-	}
+	}*/
 }
 
 function scriptssh_update() {
-	$cron = cron::byClassAndFunction('scriptssh', 'update');
+	/*$cron = cron::byClassAndFunction('scriptssh', 'update');
 	if (!is_object($cron)) {
 		$cron = new cron();
 	}
@@ -47,14 +47,14 @@ function scriptssh_update() {
 	$cron->stop();
 	foreach (scriptssh::byType('scriptssh') as $scriptssh) {
 		$scriptssh->save();
-	}
+	}*/
 }
 
 function scriptssh_remove() {
-	$cron = cron::byClassAndFunction('scriptssh', 'update');
+	/*$cron = cron::byClassAndFunction('scriptssh', 'update');
 	if (is_object($cron)) {
 		$cron->remove();
-	}
+	}*/
 }
 
 ?>
