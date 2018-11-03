@@ -1,5 +1,18 @@
 <div id="plugin_container" class="eqLogic-widget eqLogic allowResize refresh" style="width:#width#;height:#height#;border:#border#;border-radius:#border-radius#;background-color: #background-color#;color: #color#; #style#" data-category="" data-eqLogic_id="#id#" data-version="#version#" >
 	<center class="widget-name"><strong><a href="#eqLink#" style="font-size : 1.1em;#hideEqLogicName#">#name_display#</strong></a>
 		<span title="#object_name_collect#" style="font-size: 0.85em;position: relative;top:-2px;">#object_name#</span>
+		<span title="Rafaîchir" class="refresh tooltips" data-type="action" data-subtype="other" data-cmd_id="#cmd_refresh_id#" style="float: right">
+			<a class="action" style="cursor: pointer;"><i class="fa fa-refresh" style="font-size : 1.0em;padding-right:10px"></i></a>
+		<script>
+		$('.refresh[data-cmd_id=#cmd_refresh_id#] .action').on('click', function() {
+			jeedom.cmd.execute({id: '#cmd_refresh_id#'});
+		});
+		</script>
+		</span>
+	</center>
 
+	<div class="tooltips" data-cmd_id="#status_id#" data-type="info" data-subtype="string" style="margin-left:5px;display: #status_display#;">
+			<span title="Statut" class="fa fa-terminal" style="min-width:15px"></span>
+			<span>Statut #status#</span>
+	</div>
 </div>
