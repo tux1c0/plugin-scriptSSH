@@ -110,9 +110,9 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
 							<legend>{{Configuration Script}}</legend>
 							<div>
 								<div class="form-group">
-									<label class="col-sm-2 control-label">{{IP}}</label>
+									<label class="col-sm-2 control-label">{{Script}}</label>
 									<div class="col-sm-2">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="ip" />
+										<textarea style="height : 95px;" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="script"></textarea>
 									</div>
 								</div>
 							</div>
@@ -120,6 +120,12 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
 						<div>
 							<legend>{{Configuration SSH}}</legend>
 							<div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{IP}}</label>
+									<div class="col-sm-2">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="ip" />
+									</div>
+								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">{{Nom d'utilisateur}}</label>
 									<div class="col-sm-2">
