@@ -76,6 +76,10 @@ class scriptssh extends eqLogic {
 		$pwd = $this->getConfiguration('password');
 		$port = $this->getConfiguration('portssh');
 
+		// var
+		$this->infos = array(
+			'status'	=> ''
+		);
 		
 		if ($this->startSSH($IPaddress, $login, $pwd, $port)) {
 			$this->infos['status'] = "OK";
@@ -185,11 +189,21 @@ class scriptssh extends eqLogic {
 			$scriptsshCmd->setSubType('string');
 			$scriptsshCmd->save();
 		}
+		
+		$scriptsshCmd = $this->getCmd(null, 'refresh');
+		if (!is_object($scriptsshCmd)) {
+			log::add('scriptssh', 'debug', 'refresh');
+			$scriptsshCmd = new scriptsshCmd();
+			$scriptsshCmd->setName(__('Rafraîchir', __FILE__));
+			$scriptsshCmd->setEqLogic_id($this->getId());
+			$scriptsshCmd->setLogicalId('refresh');
+			$scriptsshCmd->setType('action');
+			$scriptsshCmd->setSubType('other');
+			$scriptsshCmd->save();
+		}
 	}
 	
 	public function postUpdate() {
-		
-		
 		$cmd = $this->getCmd(null, 'refresh');
 		if (is_object($cmd)) { 
 			 $cmd->execCmd();
