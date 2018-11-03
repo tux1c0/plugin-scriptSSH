@@ -1,0 +1,11 @@
+{
+	"id" : "scriptssh",
+	"name" : "scriptSSH",
+	"description" : "Plugin pour l'exécution de script à travers SSH",
+	"licence" : "AGPL",
+	"author" : "Tux1c0",
+	"require" : "3.2",
+	"category" : "automatisme",
+	"hasDependency" : true,
+	"documentation" : "https://tux1c0.github.io/plugin-scriptssh/#language#/"
+}
