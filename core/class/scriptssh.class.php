@@ -26,7 +26,7 @@ class scriptssh extends eqLogic {
 	public static function dependancy_info() {
 		$return = array();
 		$return['progress_file'] = jeedom::getTmpFolder('scriptssh') . '/dependance';
-		if (exec(system::getCmdSudo() . system::get('cmd_check') . '-E "php\-ssh2|php5\-snmp|php\-snmp" | wc -l') >= 1) {
+		if (exec(system::getCmdSudo() . system::get('cmd_check') . '-E "php\-ssh2" | wc -l') >= 1) {
 			$return['state'] = 'ok';
 		} else {
 			$return['state'] = 'nok';
@@ -53,18 +53,6 @@ class scriptssh extends eqLogic {
 		}
 	}
 	
-	public static function cron15() {
-		foreach (self::byType('scriptssh') as $scriptssh) {
-			if ($scriptssh->getIsEnable() == 1) {
-				$cmd = $scriptssh->getCmd(null, 'refresh');
-				if (!is_object($cmd)) {
-					continue; 
-				}
-				$cmd->execCmd();
-			}
-		}
-    }
-	
 	public function preUpdate() {
 		if ($this->getConfiguration('ip') == '') {
 			throw new Exception(__('Le champs IP ne peut pas être vide', __FILE__));
@@ -87,13 +75,18 @@ class scriptssh extends eqLogic {
 		$login = $this->getConfiguration('username');
 		$pwd = $this->getConfiguration('password');
 		$port = $this->getConfiguration('portssh');
-		$NAS = $this->getName();
-		
 
-			$this->updateInfo();
+		
+		if ($this->startSSH($IPaddress, $login, $pwd, $port)) {
+			$this->infos['status'] = "OK";
+		} else {
+			$this->infos['status'] = "NOK";
+		}
 			
-			// close SSH
-			//$this->disconnect($NAS);
+		$this->updateInfo();
+			
+		// close SSH
+		$this->disconnect($IPaddress);
 
 	}
 	
@@ -126,19 +119,19 @@ class scriptssh extends eqLogic {
 	}
 	
 	// establish SSH
-	private function startSSH($ip, $name, $user, $pass, $SSHport) {
+	private function startSSH($ip, $user, $pass, $SSHport) {
 		try {
 			// SSH connection
 			if (!$this->SSH = ssh2_connect($ip, $SSHport)) {
-				log::add('scriptssh', 'error', 'Impossible de se connecter en SSH au NAS '.$name);
+				log::add('scriptssh', 'error', 'Impossible de se connecter en SSH à '.$ip);
 				return 0;
 			}else{
 				// SSH authentication
 				if (!ssh2_auth_password($this->SSH, $user, $pass)){
-					log::add('scriptssh', 'error', 'Mauvais login/password pour '.$name);
+					log::add('scriptssh', 'error', 'Mauvais login/password pour '.$ip);
 					return 0;
 				}else{
-					log::add('scriptssh', 'debug', 'Connexion OK pour '.$name);
+					log::add('scriptssh', 'debug', 'Connexion OK pour '.$ip);
 					return 1;
 				}
 			}
