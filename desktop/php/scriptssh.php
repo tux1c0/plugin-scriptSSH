@@ -146,6 +146,35 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
 								</div>
 							</div>
 						</div>
+						<div>
+							<legend>{{Utilisateurs Tiers pour le script}}</legend>
+							<div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{Nom d'utilisateur}}</label>
+									<div class="col-sm-2">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="username1" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{Mot de passe}}</label>
+									<div class="col-sm-2">
+										<input type="password" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="password1" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{Nom d'utilisateur}}</label>
+									<div class="col-sm-2">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="username2" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{Mot de passe}}</label>
+									<div class="col-sm-2">
+										<input type="password" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="password2" />
+									</div>
+								</div>
+							</div>
+						</div>
 					</fieldset>
 				</form>
 			</div>
