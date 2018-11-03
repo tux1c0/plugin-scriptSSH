@@ -167,6 +167,19 @@ class scriptssh extends eqLogic {
 		  return '';
 		}
 		
+		foreach ($this->getCmd('info') as $cmd) {
+			$replace['#' . $cmd->getLogicalId() . '_history#'] = '';
+			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
+			$replace['#' . $cmd->getLogicalId() . '#'] = $cmd->execCmd();
+			$replace['#' . $cmd->getLogicalId() . '_collect#'] = $cmd->getCollectDate();
+			if ($cmd->getIsHistorized() == 1) {
+				$replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor';
+			}
+			if ($cmd->getIsVisible() == 0) {
+				$replace['#' . $cmd->getLogicalId() . '_display#'] = 'none';
+			}
+		}
+		
 		foreach ($this->getCmd('action') as $cmd) {
 			$replace['#cmd_' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
 		}
