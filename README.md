@@ -1,0 +1,1 @@
+# plugin-scriptSSH for jeedom
