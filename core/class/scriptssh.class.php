@@ -182,16 +182,17 @@ class scriptssh extends eqLogic {
 					return 0;
 				}else{
 					log::add('scriptssh', 'debug', 'Connexion OK pour '.$ip);
-					return 1;
 				}
 			}
 			
 			// create a shell
 			if (!($this->shell = ssh2_shell($this->SSH, 'vt102', null, 80, 40, SSH2_TERM_UNIT_CHARS))) {
 				log::add('scriptssh', 'error', 'Impossible de créer un shell avec '.$ip);
+				return 0;
 			} else {
 				stream_set_blocking($this->shell, true);
 				log::add('scriptssh', 'debug', 'Shell OK pour '.$ip);
+				return 1;
 			}
 		} catch (Exception $e) {
 			log::add('scriptssh', 'error', 'startSSH retourne '.$e);
