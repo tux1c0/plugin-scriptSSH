@@ -150,7 +150,7 @@ class scriptssh extends eqLogic {
             $time_start = time();
 			$data = "";
 			while (true){
-				$data .= fread($this->, 4096);
+				$data .= fread($this->shell, 4096);
 				if (strpos($data,"#COMMAND_FINISHED#") !== false) {
 					log::add('scriptssh', 'debug', 'Commande OK');
 					break;
