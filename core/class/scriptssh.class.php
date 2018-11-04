@@ -75,6 +75,11 @@ class scriptssh extends eqLogic {
 		$login = $this->getConfiguration('username');
 		$pwd = $this->getConfiguration('password');
 		$port = $this->getConfiguration('portssh');
+		$script = $this->getConfiguration('script');
+		$user1 = $this->getConfiguration('username1');
+		$pwd1 = $this->getConfiguration('password1');
+		$user2 = $this->getConfiguration('username2');
+		$pwd2 = $this->getConfiguration('password2');
 
 		// var
 		$this->infos = array(
@@ -86,12 +91,34 @@ class scriptssh extends eqLogic {
 		} else {
 			$this->infos['status'] = "NOK";
 		}
+		
+		$TabScript = explode("\n",$script);
+		
+		foreach($TabScript as $cmd) {
+			if(strpos($cmd, "#INPUT#") === 0) {
+				
+			} else {
+				$this->execSSH($cmd);
+			}
+		}
+		
+
 			
 		$this->updateInfo();
 			
 		// close SSH
 		$this->disconnect($IPaddress);
 
+	}
+	
+	// replace keywords by parameters
+	private function replaceKeyWord($txt, $user1, $pwd1, $user2, $pwd2) {
+		$texte = str_replace("#USER1#", $user1, $txt);
+		$texte = str_replace("#USER2#", $user2, $texte);
+		$texte = str_replace("#PWD1#", $pwd1, $texte);
+		$texte = str_replace("#PWD2#", $pwd2, $texte);
+		
+		return $texte;
 	}
 	
 	// update HTML
@@ -111,11 +138,30 @@ class scriptssh extends eqLogic {
 	// execute SSH command
 	private function execSSH($cmd) {
 		try {
-			$cmdOutput = ssh2_exec($this->SSH, $cmd);
+			//$cmdOutput = ssh2_exec($this->SSH, $cmd);
 			log::add('scriptssh', 'debug', 'Commande '.$cmd);
-			stream_set_blocking($cmdOutput, true);
-			$output = stream_get_contents($cmdOutput);
-			log::add('scriptssh', 'debug', 'Retour Commande '.$output);
+			//stream_set_blocking($cmdOutput, true);
+			//$output = stream_get_contents($cmdOutput);
+			
+			fwrite($this->shell, $cmd."; echo '#COMMAND_FINISHED#'\n");
+            sleep(1);
+
+            // collect and returning data
+            $time_start = time();
+			$data = "";
+			while (true){
+				$data .= fread($this->, 4096);
+				if (strpos($data,"#COMMAND_FINISHED#") !== false) {
+					log::add('scriptssh', 'debug', 'Commande OK');
+					break;
+				}
+				if ((time()-$time_start) > 10 ) {
+					log::add('scriptssh', 'error', 'Timeout 10s de la commande');
+					break;
+				}
+			}
+			
+			log::add('scriptssh', 'debug', 'Retour Commande '.$data);
 		} catch (Exception $e) {
 			log::add('scriptssh', 'error', 'execSSH retourne '.$e);
 		}
@@ -139,6 +185,14 @@ class scriptssh extends eqLogic {
 					return 1;
 				}
 			}
+			
+			// create a shell
+			if (!($this->shell = ssh2_shell($this->SSH, 'vt102', null, 80, 40, SSH2_TERM_UNIT_CHARS))) {
+				log::add('scriptssh', 'error', 'Impossible de créer un shell avec '.$ip);
+			} else {
+				stream_set_blocking($this->shell, true);
+				log::add('scriptssh', 'debug', 'Shell OK pour '.$ip);
+			}
 		} catch (Exception $e) {
 			log::add('scriptssh', 'error', 'startSSH retourne '.$e);
 		}			
@@ -147,6 +201,8 @@ class scriptssh extends eqLogic {
 	// Close SSH connection
 	private function disconnect($name) {
 		try {
+			fclose($this->shell);
+			
 			if (!ssh2_disconnect($this->SSH)) {
 				log::add('scriptssh', 'error', 'Erreur de déconnexion pour '.$name);
 			}
