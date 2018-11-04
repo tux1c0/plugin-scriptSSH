@@ -146,6 +146,13 @@ class scriptssh extends eqLogic {
 			//stream_set_blocking($cmdOutput, true);
 			//$output = stream_get_contents($cmdOutput);
 			
+			fwrite($this->shell, $cmd.PHP_EOL);
+            sleep(1);
+			$data = "";
+            while ($buf = fgets($this->shell)) {
+                $data .= $buf."/n";
+            }
+			/*
 			fwrite($this->shell, $cmd."; echo '#COMMAND_FINISHED#'\n");
             sleep(1);
 
@@ -153,7 +160,7 @@ class scriptssh extends eqLogic {
             $time_start = time();
 			$data = "";
 			while (true){
-				$data .= fgets($this->shell);
+				$data .= fgets($this->shell).'/n';
 				if (strpos($data,"#COMMAND_FINISHED#") !== false) {
 					log::add('scriptssh', 'debug', 'Commande OK');
 					break;
@@ -162,7 +169,7 @@ class scriptssh extends eqLogic {
 					log::add('scriptssh', 'error', 'Timeout 10s de la commande');
 					break;
 				}
-			}
+			}*/
 			
 			log::add('scriptssh', 'debug', 'Retour Commande '.$data);
 		} catch (Exception $e) {
