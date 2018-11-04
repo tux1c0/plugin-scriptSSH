@@ -142,8 +142,8 @@ class scriptssh extends eqLogic {
 	private function execSSH($cmd) {
 		try {
 			$cmdOutput = ssh2_exec($this->SSH, $cmd);
-			
-			//stream_set_blocking($cmdOutput, true);
+			log::add('scriptssh', 'debug', 'Commande '.$cmd);
+			stream_set_blocking($cmdOutput, true);
 			$output = stream_get_contents($cmdOutput);
 			
 			/*fwrite($this->shell, $cmd."\n");
