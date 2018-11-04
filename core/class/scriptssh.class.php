@@ -150,7 +150,7 @@ class scriptssh extends eqLogic {
             $time_start = time();
 			$data = "";
 			while (true){
-				$data .= fread($this->shell, 4096);
+				$data .= fgets($this->shell);
 				if (strpos($data,"#COMMAND_FINISHED#") !== false) {
 					log::add('scriptssh', 'debug', 'Commande OK');
 					break;
@@ -192,8 +192,10 @@ class scriptssh extends eqLogic {
 			} else {
 				stream_set_blocking($this->shell, true);
 				// Prompt
+				fwrite($this->shell, "\n");
+				sleep(1);
 				$data = "";
-				while ($buf = fread($this->shell,4096)) {
+				while ($buf = fgets($this->shell)) {
 					$data .= $buf;
 				}
 				log::add('scriptssh', 'debug', 'Shell OK pour '.$ip);
