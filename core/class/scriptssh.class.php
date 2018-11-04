@@ -146,7 +146,7 @@ class scriptssh extends eqLogic {
 			//stream_set_blocking($cmdOutput, true);
 			//$output = stream_get_contents($cmdOutput);
 			
-			fwrite($this->shell, $cmd.PHP_EOL);
+			fwrite($this->shell, $cmd."\n");
             sleep(1);
 			$data = "";
             while ($buf = fgets($this->shell)) {
