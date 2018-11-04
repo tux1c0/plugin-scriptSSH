@@ -191,7 +191,13 @@ class scriptssh extends eqLogic {
 				return 0;
 			} else {
 				stream_set_blocking($this->shell, true);
+				// Prompt
+				$data = "";
+				while ($buf = fread($this->shell,4096)) {
+					$data .= $buf;
+				}
 				log::add('scriptssh', 'debug', 'Shell OK pour '.$ip);
+				log::add('scriptssh', 'debug', 'Prompt '.$data);
 				return 1;
 			}
 		} catch (Exception $e) {
