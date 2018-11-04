@@ -92,6 +92,9 @@ class scriptssh extends eqLogic {
 			$this->infos['status'] = "NOK";
 		}
 		
+		// Prompt
+		$this->execSSH(" ");
+				
 		$TabScript = explode("\n",$script);
 		
 		foreach($TabScript as $cmd) {
@@ -191,15 +194,7 @@ class scriptssh extends eqLogic {
 				return 0;
 			} else {
 				stream_set_blocking($this->shell, true);
-				// Prompt
-				fwrite($this->shell, "\n");
-				sleep(1);
-				$data = "";
-				while ($buf = fgets($this->shell)) {
-					$data .= $buf;
-				}
 				log::add('scriptssh', 'debug', 'Shell OK pour '.$ip);
-				log::add('scriptssh', 'debug', 'Prompt '.$data);
 				return 1;
 			}
 		} catch (Exception $e) {
