@@ -141,17 +141,19 @@ class scriptssh extends eqLogic {
 	// execute SSH command
 	private function execSSH($cmd) {
 		try {
-			//$cmdOutput = ssh2_exec($this->SSH, $cmd);
-			log::add('scriptssh', 'debug', 'Commande '.$cmd);
-			//stream_set_blocking($cmdOutput, true);
-			//$output = stream_get_contents($cmdOutput);
+			$cmdOutput = ssh2_exec($this->SSH, $cmd);
 			
-			fwrite($this->shell, $cmd."\n");
+			//stream_set_blocking($cmdOutput, true);
+			$output = stream_get_contents($cmdOutput);
+			
+			/*fwrite($this->shell, $cmd."\n");
             sleep(1);
+			log::add('scriptssh', 'debug', 'Commande '.$cmd);
 			$data = "";
             while ($buf = fgets($this->shell)) {
+				log::add('scriptssh', 'debug', $buf);
                 $data .= $buf."/n";
-            }
+            }*/
 			/*
 			fwrite($this->shell, $cmd."; echo '#COMMAND_FINISHED#'\n");
             sleep(1);
@@ -171,7 +173,7 @@ class scriptssh extends eqLogic {
 				}
 			}*/
 			
-			log::add('scriptssh', 'debug', 'Retour Commande '.$data);
+			log::add('scriptssh', 'debug', 'Retour Commande '.$output);
 		} catch (Exception $e) {
 			log::add('scriptssh', 'error', 'execSSH retourne '.$e);
 		}
@@ -192,18 +194,19 @@ class scriptssh extends eqLogic {
 					return 0;
 				}else{
 					log::add('scriptssh', 'debug', 'Connexion OK pour '.$ip);
+					return 1;
 				}
 			}
 			
 			// create a shell
-			if (!($this->shell = ssh2_shell($this->SSH, 'vt102', null, 80, 40, SSH2_TERM_UNIT_CHARS))) {
+			/*if (!($this->shell = ssh2_shell($this->SSH, 'vt102', null, 80, 40, SSH2_TERM_UNIT_CHARS))) {
 				log::add('scriptssh', 'error', 'Impossible de créer un shell avec '.$ip);
 				return 0;
 			} else {
 				stream_set_blocking($this->shell, true);
 				log::add('scriptssh', 'debug', 'Shell OK pour '.$ip);
 				return 1;
-			}
+			}*/
 		} catch (Exception $e) {
 			log::add('scriptssh', 'error', 'startSSH retourne '.$e);
 		}			
