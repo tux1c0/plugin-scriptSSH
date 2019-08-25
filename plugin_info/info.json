@@ -5,7 +5,8 @@
 	"licence" : "AGPL",
 	"author" : "Tux1c0",
 	"require" : "3.2",
-	"category" : "Automatisme",
+	"category" : "automatisation",
 	"hasDependency" : true,
+	"changelog" : "https://tux1c0.github.io/plugin-scriptssh/#language#/",
 	"documentation" : "https://tux1c0.github.io/plugin-scriptssh/#language#/"
 }
